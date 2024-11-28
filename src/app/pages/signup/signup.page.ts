@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/authentication.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -13,7 +13,9 @@ import { ToastController } from '@ionic/angular';
 export class SignupPage implements OnInit {
   ionicForm: FormGroup ;
 
-  constructor(private toastController: ToastController,private loadingController: LoadingController,private authService:AuthServiceService,private router: Router, public formBuilder: FormBuilder) { 
+  constructor(private toastController: ToastController,private loadingController: LoadingController,private authService:AuthServiceService,private router: Router, public formBuilder: FormBuilder,
+    private modalCtrl: ModalController
+  ) { 
 
   }
 
@@ -23,14 +25,14 @@ export class SignupPage implements OnInit {
       fullname:['',
         [Validators.required]
       ],
-    //   contact:['',
-    //   [
-    //     Validators.required,
-    //     Validators.pattern("^[0-9]*$"),
-    //     Validators.minLength(10),
-    //     // Validators.min(10)
-    //   ]
-    // ],
+      contact:['',
+      [
+        Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.minLength(10),
+        // Validators.min(10)
+      ]
+    ],
       email: [
         '',
         [
@@ -42,22 +44,33 @@ export class SignupPage implements OnInit {
         Validators.pattern('^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]+$'),
         Validators.required,
       ],
+      
     ],
+      confirmPassword : ['', Validators.required] // new field
+    }, {
+      validator : this.matchPasswords('password', 'confirmPassword')
     });
+  }
+
+  matchPasswords(password: string, confirmPassword: string) {
+    return (formGroup: FormGroup) => {
+      const passwordControl = formGroup.controls[password];
+      const confirmPasswordControl = formGroup.controls[confirmPassword];
+
+      if (confirmPasswordControl.errors && !confirmPasswordControl.errors['passwordMismatch']) {
+        return;
+      }
+
+      if (passwordControl.value !== confirmPasswordControl.value) {
+        confirmPasswordControl.setErrors({ passwordMismatch: true });
+      } else {
+        confirmPasswordControl.setErrors(null);
+      }
+    };
   }
   get errorControl() {
     return this.ionicForm.controls;
   }
-  // async signUpWithGoogle(){
-  //   const loading = await this.loadingController.create();
-  //   // await loading.present();
-
-  //   const user = await this.authService.GoogleAuth().then((re)=>{
-  //     console.log(re);
-      
-  //     // this.router.navigate(['/home'])
-  //   })
-  // }
  
   async signUP(){
     const loading = await this.loadingController.create();
@@ -72,9 +85,16 @@ export class SignupPage implements OnInit {
 
       if (user) {
         loading.dismiss();
+        const toast = await this.toastController.create({
+          message: "User created successfully ! ",
+          duration:2000
+        })
+        toast.present()
+        this.modalCtrl.dismiss()
         this.router.navigate(['/login'])
       }
     } else {
+        loading.dismiss();
       return console.log('Please provide all the required values!');
     }
   }

@@ -17,15 +17,33 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">record</ion-title>
+      <ion-title size="large">Detail voiture</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div *ngIf="record">
     <ion-item>
-      <ion-input label="Title"   class="title" [(ngModel)]="record.title"></ion-input>
+      <ion-input label="marque"   class="marque" [(ngModel)]="record.marque"></ion-input>
     </ion-item>
-      <ion-textarea class="text-content" lines="none" [(ngModel)]="record.content" ></ion-textarea>
+      <!-- <ion-textarea class="text-content" lines="none" [(ngModel)]="record.content" ></ion-textarea> -->
+      <ion-item>
+        <ion-input label="modele"   class="modele" [(ngModel)]="record.modele"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="plaque"   class="plaque" [(ngModel)]="record.plaque"></ion-input>
+      </ion-item>
+
+      <!-- <ion-item>
+        <ion-input label="Title"   class="title" [(ngModel)]="record.image"></ion-input>
+      </ion-item> -->
+      <!-- <ion-grid >
+        <ion-row>
+          <ion-col size="6" *ngFor="let image of imageUrls>
+            <ion-img [src]="image"></ion-img>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
   </div>
 
 </ion-content>

@@ -6,13 +6,13 @@
   </ion-header>
 
   <div class="header">
-    <ion-title class="title" size="large">Get Started</ion-title>
-    <p class="subtitle">By creating an account</p>
+    <ion-title class="title" size="large">Kick off</ion-title>
+    <p class="subtitle">Créeation du compte</p>
   </div>
   <form [formGroup]="ionicForm" novalidate>
     <div class="ion-padding">
       <ion-item >
-        <ion-input class="input" formControlName="fullname" placeholder="Fullname" />
+        <ion-input class="input" formControlName="fullname" placeholder="User name" />
         <ion-icon slot="end" name="person-outline"></ion-icon>
       </ion-item>
       <div style="padding-top: -26px;padding-bottom: 16px;"
@@ -32,6 +32,18 @@
           email.</ion-text>
       </div>
       <ion-item>
+        <ion-input class="input" type="numeric" formControlName="contact" placeholder="contact" />
+        <ion-icon slot="end" name="call-outline"></ion-icon>
+      </ion-item>
+      <div style="padding-top: -26px;padding-bottom: 16px;"
+        *ngIf="this.ionicForm.controls?.['contact'].touched && this.ionicForm.controls?.['contact'].invalid">
+        <ion-text *ngIf="errorControl.contact.errors?.required" class="errorInput" color="danger">Contact is
+          required..</ion-text>
+          <ion-text *ngIf="errorControl.contact.errors?.pattern" class="errorInput" color="danger">Contact should contain only numbers..</ion-text>
+          <ion-text *ngIf="errorControl.contact.errors?.minlength" class="errorInput" color="danger">10 digits is required</ion-text>
+    
+        </div>
+      <ion-item>
         <ion-input class="input" type="password" formControlName="password" placeholder="password" />
         <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
       </ion-item>
@@ -42,19 +54,22 @@
           Password must be at least 8 characters long, with at least one uppercase letter and one number.
         </ion-text>
       </div>
+
+      <!-- Confirm Password -->
+      <ion-item>
+        <ion-input class="input" type="password" formControlName="confirmPassword" placeholder="Confirm Password"></ion-input>
+        <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
+      </ion-item>
+
       
-      <!-- <ion-item>
-        <ion-input class="input" type="numeric" formControlName="contact" placeholder="contact" />
-        <ion-icon slot="end" name="call-outline"></ion-icon>
-      </ion-item> -->
-      <!-- <div style="padding-top: -26px;padding-bottom: 16px;"
-        *ngIf="this.ionicForm.controls?.['contact'].touched && this.ionicForm.controls?.['contact'].invalid">
-        <ion-text *ngIf="errorControl.contact.errors?.required" class="errorInput" color="danger">Contact is
-          required..</ion-text>
-          <ion-text *ngIf="errorControl.contact.errors?.pattern" class="errorInput" color="danger">Contact should contain only numbers..</ion-text>
-          <ion-text *ngIf="errorControl.contact.errors?.minlength" class="errorInput" color="danger">Contact should be less than 10 digit..</ion-text>
-    
-        </div> -->
+      <div *ngIf="ionicForm.controls['confirmPassword'].touched && ionicForm.controls['confirmPassword'].invalid">
+        <ion-text *ngIf="ionicForm.controls['confirmPassword'].errors?.required" color="danger">Confirm password is required.</ion-text>
+        <ion-text *ngIf="ionicForm.controls['confirmPassword'].errors?.passwordMismatch" color="danger">
+          Passwords do not match.
+        </ion-text>
+      </div>
+      
+      
       
       
     <!-- <ion-button color="light" (click)='this.signUpWithGoogle()'>
@@ -63,7 +78,7 @@
     </ion-button> -->
 
       <div class="loginLink">
-        <p class="p">Already a memember? <a [routerLink]="['/login']" style="color: #FFC33F">Log in</a></p>
+        <p class="p">Dèja membre ? <a [routerLink]="['/login']" style="color: #4c3fff">Connexion</a></p>
       </div>
     </div>
 
@@ -74,7 +89,7 @@
     <ion-toolbar>
       <ion-button expand="block" (click)="signUP()"> 
         <ion-icon slot="start" name="chevron-forward"></ion-icon>
-        Submit
+        Sauvgarder
       </ion-button>
     </ion-toolbar>
   </ion-footer>

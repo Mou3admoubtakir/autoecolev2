@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>record</ion-title>
+    <ion-title>Liste des voitures</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,13 +11,20 @@
         <ion-card>
 
           <ion-card-header>
-            <ion-card-title class="title">{{record.title}}</ion-card-title>
-            <ion-card-subtitle  color="secondary" >06:11</ion-card-subtitle>
+            <ion-card-title class="title">{{record.marque}}</ion-card-title>
+            <ion-card-subtitle  color="secondary" >{{record.plaque}}</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content class="content">
-            {{record.content}}
+            {{record.model}}
           </ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6" *ngFor="let image of imageUrls">
+                <ion-img [src]="image"></ion-img>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -38,13 +45,45 @@
       </ion-header>
       <ion-content class="ion-padding">
         
+              
         <ion-item>
-          <ion-input label="Title" labelPlacement="stacked" type="text" placeholder="" [(ngModel)]="title"></ion-input>
+          <ion-label position="stacked">Marque</ion-label>
+          <ion-input type="text" placeholder="Enter the car's marque" [(ngModel)]="marque"></ion-input>
         </ion-item>
 
-        <ion-textarea class="text-content" rows=“15”  lines="none" placeholder="Type something here"
-        [(ngModel)]="content">
-        </ion-textarea>
+        
+        <ion-item>
+          <ion-label position="stacked">Modèle</ion-label>
+          <ion-input type="text" placeholder="Enter the car's model" [(ngModel)]="modele"></ion-input>
+        </ion-item>
+
+        
+        <ion-item>
+          <ion-label position="stacked">Plaque d’immatriculation</ion-label>
+          <ion-input type="text" placeholder="Enter the car's registration number" [(ngModel)]="plaque"></ion-input>
+        </ion-item>
+
+       
+        <ion-item>
+          <ion-label position="stacked">Take picture of The front</ion-label>
+          <ion-button expand="block" (click)="takePicture()">Take Picture
+            <ion-icon name="camera"></ion-icon>
+          </ion-button>
+          <!-- <div class="flex">
+            <div class="img-box">
+              <img src="image">
+            </div>
+          </div> -->
+        </ion-item>
+
+        <!-- <ion-item>
+          <ion-label position="stacked">Take picture of the back</ion-label>
+          <ion-button expand="block" (click)="takePicture()">Take Picture</ion-button>
+          <div *ngIf="this.picture">
+            <img src="{{this.picture}}">
+          </div>
+        </ion-item> -->
+
       
       </ion-content>
     </ng-template>

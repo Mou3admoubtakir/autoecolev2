@@ -3,19 +3,30 @@ import {AuthServiceService} from '../authentication.service'
 import { addDoc, collection, collectionData, doc, docData, Firestore, query, where, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { deleteDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { Photo } from '@capacitor/camera';
+
 
 export class Record{
   id?:string;
   userId:string;
-  title:string;
-  content:string;
+  marque:string;
+  modele:string;
+  plaque : string;
   createdAt:any;
-
-  constructor(userId:string,title:string,content:string,createdAt:any){
+  imageUrl: string;
+  // imageId : any;  
+  
+  constructor(userId:string,marque:string,modele:string,plaque:string, createdAt:any, imageUrl:string
+  ){
     this.userId = userId;
-    this.title = title;
-    this.content = content;
+    this.marque = marque;
+    this.modele = modele;
+    this.plaque = plaque;
     this.createdAt = createdAt;
+    this.imageUrl = imageUrl;
+    // this.imageId = imageId;
+    
   }
 }
 @Injectable({
@@ -30,12 +41,14 @@ export class RecordServiceService {
     })
    }
 
-
    addRecord(record:Record){
       record.userId = this.userId
       const recordRef = collection(this.firestore, 'records')
+      
       return addDoc(recordRef, record)
    }
+
+  
 
    getRecords(userId:any) : Observable<Record[]>{
     const recordRef = collection(this.firestore, 'records')
@@ -56,7 +69,9 @@ export class RecordServiceService {
 
   updateRecord(record:Record){
     const recordRef = doc(this.firestore,`records/${record.id}`)
-    return updateDoc(recordRef,{title:record.title,content:record.content})
+    return updateDoc(recordRef,{marque:record.marque,model:record.modele, plaque:record.plaque})
   }
+
+  private async savePicture(photo: Photo) { }
 
 }
